@@ -26,7 +26,7 @@ st.title("💼 Job Recommendation System")
 st.markdown("Get job updates tailored to your skills and interests using unsupervised ML.")
 
 # Sidebar – User preferences
-keyword = st.sidebar.selectbox("🔍 Choose job keyword", ["data science", "cloud", "machine learning", "AI", "NLP"])
+keyword = st.sidebar.selectbox("🔍 Choose job keyword", ["Data Science", "Cloud", "Machine Learning", "AI", "NLP"])
 selected_names = st.sidebar.multiselect("🎯 Select your job interests", list(cluster_names.values()), default=[
     cluster_names[0], cluster_names[2]
 ])
