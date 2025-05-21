@@ -55,12 +55,13 @@ The data is stored in a structured format for processing and classification.
 
 ## Model Training
 The pipeline follows these steps:
-1.Data Preprocessing: Lowercasing, handling missing values in skill text.
-2.TF-IDF Vectorization: Converts skill text into feature vectors using TfidfVectorizer.
-3.Normalization: TF-IDF vectors are normalized using L2 norm.
-4.KMeans Clustering: Groups job listings into 5 clusters based on skill similarity.
-5.Cluster Labeling: Human-readable labels assigned to each cluster after inspection.
-6.Model Persistence: Saves trained KMeans model and vectorizer with pickle for reuse.
+
+1. Data Preprocessing: Lowercasing, handling missing values in skill text.
+2. TF-IDF Vectorization: Converts skill text into feature vectors using TfidfVectorizer.
+3. Normalization: TF-IDF vectors are normalized using L2 norm.
+4. KMeans Clustering: Groups job listings into 5 clusters based on skill similarity.
+5. Cluster Labeling: Human-readable labels assigned to each cluster after inspection.
+6. Model Persistence: Saves trained KMeans model and vectorizer with pickle for reuse.
 
 ## Deployment
 The project is deployed as a web application using Streamlit. Features include:
@@ -73,10 +74,10 @@ You can access the live demo here:
 [🔗 Live App](https://job-classifier-ffasuixadrgziuorfymcup.streamlit.app/)
 
 ## Usage
-1.Open the web app.
-2.Select your preferred job categories (e.g., Data Science & ML).
-3.Click "Run Daily Job Check" to see matching jobs.
-4.Download the results for offline access.
+1. Open the web app.
+2. Select your preferred job categories (e.g., Data Science & ML).
+3. Click "Run Daily Job Check" to see matching jobs.
+4. Download the results for offline access.
 
 ## Future Improvements
 - Add email notification system for new job alerts.
