@@ -7,8 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1uobRpua0PlzD1kSokLCL2gb4NH76oMhS
 """
 
-# 1. Install dependencies
-!pip install pandas beautifulsoup4 requests scikit-learn joblib schedule streamlit
 
 import requests
 from bs4 import BeautifulSoup
@@ -147,7 +145,6 @@ if __name__ == "__main__":
     for keyword, clusters in interests.items():
         run_daily_job_check(keyword, clusters, kmeans_model, tfidf_vectorizer)
 
-pip install joblib
 
 # Commented out IPython magic to ensure Python compatibility.
 # %%writefile app.py
