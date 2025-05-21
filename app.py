@@ -11,21 +11,36 @@ from sklearn.preprocessing import normalize
 model = joblib.load("job_cluster_model.pkl")
 vectorizer = joblib.load("tfidf_vectorizer.pkl")
 
-# App title
+# ✅ Step 1: Define human-readable cluster names
+cluster_names = {
+    0: "🧠 Data Science & ML",
+    1: "☁️ Cloud & DevOps",
+    2: "🧮 Analytics & Business Intelligence",
+    3: "💻 Backend Development",
+    4: "📊 General Tech & Others"
+}
+
+# 🔹 Step 2: Streamlit UI
+st.set_page_config(page_title="Job Recommender", layout="wide")
 st.title("💼 Job Recommendation System")
-st.write("This app scrapes jobs from Karkidi.com, clusters them by required skills, and notifies users based on their selected interests.")
+st.markdown("Get job updates tailored to your skills and interests using unsupervised ML.")
 
-# Sidebar - Select keyword and cluster interests
+# Sidebar – User preferences
 keyword = st.sidebar.selectbox("🔍 Choose job keyword", ["data science", "cloud", "machine learning", "AI", "NLP"])
-user_clusters = st.sidebar.multiselect("🎯 Select preferred job clusters (0–4)", [0, 1, 2, 3, 4], default=[0, 2])
+selected_names = st.sidebar.multiselect("🎯 Select your job interests", list(cluster_names.values()), default=[
+    cluster_names[0], cluster_names[2]
+])
 
+# Map selected names back to cluster numbers
+user_clusters = [k for k, v in cluster_names.items() if v in selected_names]
+
+# 🔍 Scrape and classify jobs
 if st.sidebar.button("🚀 Run Job Check"):
-    st.subheader(f"🔄 Checking new jobs for: {keyword}")
+    st.subheader(f"🔄 Checking new jobs for: `{keyword}`")
     new_jobs = scrape_karkidi_jobs(keyword=keyword, pages=1)
     classified = classify_new_jobs(new_jobs, model, vectorizer)
     matched = notify_user(classified, user_clusters)
 
-    # Timestamp
     now = datetime.now().strftime("%Y-%m-%d_%H-%M")
     all_jobs_path = f"results/{keyword}_all_jobs_{now}.csv"
     matched_jobs_path = f"results/{keyword}_matched_jobs_{now}.csv"
@@ -33,16 +48,15 @@ if st.sidebar.button("🚀 Run Job Check"):
     classified.to_csv(all_jobs_path, index=False)
     matched.to_csv(matched_jobs_path, index=False)
 
-    # Display and Download
-    st.subheader("✅ Classified Jobs")
+    st.subheader("✅ All Classified Jobs")
     st.dataframe(classified)
-    st.download_button("⬇️ Download All Classified Jobs", data=classified.to_csv(index=False), file_name="classified_jobs.csv")
+    st.download_button("⬇️ Download Classified Jobs", data=classified.to_csv(index=False), file_name="classified_jobs.csv")
 
     st.subheader("🚨 Matched Jobs")
-    st.dataframe(matched)
     if not matched.empty:
+        st.dataframe(matched)
         st.download_button("⬇️ Download Matched Jobs", data=matched.to_csv(index=False), file_name="matched_jobs.csv")
     else:
-        st.info("No matched jobs found today.")
+        st.info("No matched jobs found for your selected interests.")
 else:
-    st.info("Click the button in the sidebar to check new job listings.")
+    st.info("Use the sidebar to select a keyword and clusters, then click 'Run Job Check'.")
